@@ -244,6 +244,8 @@ void onTick(CBlob@ this)
 			offset += (Vec2f(r.NextFloat(), r.NextFloat()) - Vec2f(0.5, 0.5)) * 6.0f;
 
 			CParticle@ fire = makeFireParticle(this.getPosition() + offset, 4);
+			if (fire is null) return;
+
 			fire.velocity = -this.getVelocity() * 0.06f - Vec2f(0.0f, 0.8f + r.NextFloat() * 0.4f);
 			fire.gravity = Vec2f(0.0f, 0.0f);
 
@@ -251,8 +253,10 @@ void onTick(CBlob@ this)
 			{
 				offset += (Vec2f(r.NextFloat(), r.NextFloat()) - Vec2f(0.5, 0.5)) * 6.0f;
 				CParticle@ fire2 = makeFireParticle(Vec2f_lerp(this.getOldPosition(), this.getPosition(), 0.5f) + offset, 4);
-				fire.velocity = -Vec2f_lerp(this.getOldVelocity(), this.getOldVelocity(), 0.5f)  * 0.06f - Vec2f(0.0f, 0.8f + r.NextFloat() * 0.4f);
-				fire.gravity = Vec2f(0.0f, 0.0f);
+				if (fire2 is null) return;
+
+				fire2.velocity = -Vec2f_lerp(this.getOldVelocity(), this.getOldVelocity(), 0.5f)  * 0.06f - Vec2f(0.0f, 0.8f + r.NextFloat() * 0.4f);
+				fire2.gravity = Vec2f(0.0f, 0.0f);
 			}
 
 			if (this.isInWater())
